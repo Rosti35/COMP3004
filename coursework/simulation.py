@@ -11,7 +11,7 @@ RED = (255, 0, 0)
 
 
 class Simulation:
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, dynamic_enemies = False, stop_simulation = True):
         pygame.init()
 
         self.screen_width = screen_width
@@ -24,6 +24,8 @@ class Simulation:
         self.running = False
         self.enemies = []
         self.moves = 0
+        self.dynamic_enemies = dynamic_enemies
+        self.stop_simulation = stop_simulation
 
     def new_simulation(self):
         raise NotImplementedError
@@ -62,11 +64,12 @@ class Simulation:
             self.moves += 1
             
             # Check if it's time to update the enemies
-            current_time = pygame.time.get_ticks()
-            if current_time - last_enemy_update >= enemy_update_interval:
-                # for enemy in self.enemies:
-                #     enemy.update()
-                last_enemy_update = current_time  # Update the last_enemy_update time
+            if self.dynamic_enemies: 
+                current_time = pygame.time.get_ticks()
+                if current_time - last_enemy_update >= enemy_update_interval:
+                    for enemy in self.enemies:
+                        enemy.update()
+                    last_enemy_update = current_time  # Update the last_enemy_update time
 
             # Check for collisions between agents and enemies
             for agent in self.agents:
@@ -93,8 +96,10 @@ class Simulation:
             # Set the frame rate
             self.clock.tick(60)
             
-            if len(self.enemies) == 0:
-                break
+            # Stop the simulation
+            if self.stop_simulation:
+                if len(self.enemies) == 0:
+                    break
 
         # Quit the game
         pygame.quit()

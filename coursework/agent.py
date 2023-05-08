@@ -172,7 +172,7 @@ class QLearningAgent(Agent):
         if np.random.rand() < self.epsilon:
             return np.random.randint(4)  # Random action (exploration)
         else:
-            return np.argmax(self.q_table[state[0], state[1]])  # Best action (exploitation)
+            return np.argmax(self.q_table[state[0], state[1]])  # Best action 
 
     def update(self, enemies):
        
@@ -193,7 +193,7 @@ class QLearningAgent(Agent):
                 # Move agent based on the learned Q-values
                 state = (self.rect.y // self.speed, self.rect.x // self.speed)
                 if not self.is_goal(state, nearest_enemy):
-                    action = np.argmax(self.q_table[state[0], state[1]]) # Best action (exploitation)
+                    action = np.argmax(self.q_table[state[0], state[1]]) # Best action 
                     next_state = self.get_next_state(state, action)
                     self.rect.y, self.rect.x = next_state[0] * self.speed, next_state[1] * self.speed
 

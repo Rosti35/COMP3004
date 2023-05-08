@@ -2,16 +2,13 @@ import time
 import matplotlib.pyplot as plt
 from simulation import *
 import matplotlib
+from config import *
 
-# Define agent type constants
-RULE_BASED_AGENT = 0
-A_STAR_AGENT = 1
-Q_TABLE_AGENT = 2
 
 # Run a single simulation and return the runtime
 def run_simulation(agent_type, num_agents, num_enemies, maze_size):
     # Create and set up the simulation
-    simulation = PrimMazeSimulation(800, 800)
+    simulation = PrimMazeSimulation(800, 800, DYNAMIC_ENEMIES)
     simulation.new_simulation(agent_type, num_agents, num_enemies, maze_size)
     
     # Run the simulation and measure the time
@@ -38,23 +35,6 @@ def run_simulations(num_runs, agent_type, num_agents, num_enemies, maze_size):
 def calculate_average(data):
     return sum(data) / len(data)
 
-# Plot runtimes along with the average runtime
-def plot_runtimes(runtimes, average_runtime, title):
-    plt.plot(range(1, len(runtimes) + 1), runtimes, marker='o')
-    plt.xlabel("Run Number")
-    plt.ylabel("Runtime (seconds)")
-    plt.title(title)
-    plt.axhline(average_runtime, color='r', linestyle='--', label=f"Average: {average_runtime:.2f}s")
-    plt.legend()
-    plt.show()
-
-# Parameter ranges
-agent_types = [RULE_BASED_AGENT, A_STAR_AGENT, Q_TABLE_AGENT]
-num_agents_list = [1, 2, 3]
-num_enemies_list = [1, 3]
-maze_sizes = [40, 20]
-
-num_runs = 5
 
 
 # Run simulations for a specific agent type and store the average runtimes and average moves in 2D arrays
@@ -92,7 +72,6 @@ def plot_agent_type_moves(agent_type, num_agents, average_moves, num_enemies_lis
         for j in range(len(maze_sizes)):
             text = ax.text(j, i, f"{average_moves[i, j]:.2f} moves", ha="center", va="center", color="w")
 
-    
 
 def plot_agent_type_runtimes(agent_type, num_agents, average_runtimes, num_enemies_list, maze_sizes, ax):
     
@@ -119,7 +98,16 @@ def plot_agent_type_runtimes(agent_type, num_agents, average_runtimes, num_enemi
 
 # Main part of the code
 selected_agent_type = A_STAR_AGENT
+DYNAMIC_ENEMIES = True
 selected_num_agents = 1
+
+# Parameter ranges
+agent_types = [RULE_BASED_AGENT, A_STAR_AGENT, Q_TABLE_AGENT]
+num_agents_list = [1, 2, 3]
+num_enemies_list = [1, 3]
+maze_sizes = [40, 20]
+
+num_runs = 5
 
 # Run the simulations and plot the results
 average_runtimes, average_moves = run_agent_type_simulations(selected_agent_type, selected_num_agents, num_enemies_list, maze_sizes, num_runs)
@@ -137,12 +125,3 @@ plot_agent_type_moves(selected_agent_type, selected_num_agents, average_moves, n
 plt.show()
 
 
-# # Run the simulations and calculate the average runtime
-# runtimes = run_simulations(num_runs, agent_type, num_agents, num_enemies, maze_size)
-# average_runtime = calculate_average_runtime(runtimes)
-# print(f"Agent type: {agent_type}, num_agents: {num_agents}, num_enemies: {num_enemies}, maze_size: {maze_size}")
-# print(f"Average runtime: {average_runtime:.2f} seconds")
-
-# # Plot the runtime data
-# title = f"Simulation Runtime (Agent type: {agent_type}, num_agents: {num_agents}, num_enemies: {num_enemies}, maze_size: {maze_size})"
-# plot_runtimes(runtimes, average_runtime, title)
