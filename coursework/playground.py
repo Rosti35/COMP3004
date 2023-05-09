@@ -7,7 +7,7 @@ from config import *
 # Run a single simulation and return the runtime
 def run_simulation(agent_type, num_agents, num_enemies, maze_size, dynamic_enemies):
     # Create and set up the simulation
-    simulation = RandomMazeSimulation(800, 800, dynamic_enemies, False)
+    simulation = PrimMazeSimulation(800, 800, dynamic_enemies, False)
     simulation.new_simulation(agent_type, num_agents, num_enemies, maze_size)
     
     # Run the simulation and measure the time
@@ -20,9 +20,9 @@ def run_simulation(agent_type, num_agents, num_enemies, maze_size, dynamic_enemi
 
 # Main part of the code
 agent_type = A_STAR_AGENT
-DYNAMIC_ENEMIES = True
+DYNAMIC_ENEMIES = False
 num_agents = 1
-num_enemies = 100
+num_enemies = 30
 maze_size = 10
 
 run_simulation(agent_type, num_agents, num_enemies, maze_size, DYNAMIC_ENEMIES)
